@@ -1,0 +1,35 @@
+﻿<Window x:Class="ForecheckSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ForecheckSample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <materialDesign:Card>
+            <StackPanel>
+                <Button
+                    Width="50"
+                    Height="50"
+                    Margin="10"
+                    ToolTip="Open Video File">
+                    <materialDesign:PackIcon
+                        Kind="FolderOpen"
+                        Height="20"
+                        Width="20" />
+                </Button>
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
+</Window>
