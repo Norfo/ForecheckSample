@@ -23,7 +23,8 @@
                     Width="50"
                     Height="50"
                     Margin="10"
-                    ToolTip="Open Video File">
+                    ToolTip="Open Video File"
+                    Command="{Binding OpenVideoFileCommand}">
                     <materialDesign:PackIcon
                         Kind="FolderOpen"
                         Height="20"
@@ -31,5 +32,65 @@
                 </Button>
             </StackPanel>
         </materialDesign:Card>
+
+        <Grid
+            Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <Image
+                Source="{Binding Video}"
+                Margin="0 51 0 0"/>
+
+            <StackPanel>
+                <Expander
+                    HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon 
+                                Kind="Bookmark"
+                                Margin="10 0 10 0"/>
+                            <TextBlock
+                                Text="Marked frames"/>
+                        </StackPanel>
+                    </Expander.Header>
+                    <ListView
+                        TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                        Margin="24,8,24,16">                        
+                    </ListView>
+                </Expander>                
+            </StackPanel>
+
+            <Slider
+                TickFrequency="5"
+                Orientation="Horizontal"
+                Minimum="0"
+                Maximum="{Binding MaxFrameCount}"
+                Value="{Binding CurrentFrameCount}"
+                Grid.Row="1"
+                Margin="10 0 10 0"
+                IsEnabled="{Binding IsVideoOpen}"/>
+
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                Grid.Row="2"
+                IsEnabled="{Binding IsVideoOpen}">
+                <Button
+                    Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    ToolTip="Play"
+                    Command="{Binding PlayVideoCommand}">
+                    <materialDesign:PackIcon
+                        Kind="Play"
+                        Height="24"
+                        Width="24"/>
+                </Button>
+            </StackPanel>
+            
+        </Grid>
     </Grid>
 </Window>
