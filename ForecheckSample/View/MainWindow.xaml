@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:custom="clr-namespace:ForecheckSample.View"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ForecheckSample"
         mc:Ignorable="d"
@@ -12,85 +13,201 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <materialDesign:Card>
-            <StackPanel>
-                <Button
-                    Width="50"
-                    Height="50"
-                    Margin="10"
-                    ToolTip="Open Video File"
-                    Command="{Binding OpenVideoFileCommand}">
-                    <materialDesign:PackIcon
-                        Kind="FolderOpen"
-                        Height="20"
-                        Width="20" />
-                </Button>
-            </StackPanel>
-        </materialDesign:Card>
+    <materialDesign:DialogHost
+        IsOpen="{Binding IsBookmarkDialogOpen}"
+        CloseOnClickAway="True"
+        Identifier="MainWindowDialogHost">
+        <materialDesign:DialogHost.DialogContent>
+            <custom:AddBookmarkControl DataContext="{Binding DialogVM}"/>
+        </materialDesign:DialogHost.DialogContent>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:Card>
+                <StackPanel>
+                    <Button
+                        Width="50"
+                        Height="50"
+                        Margin="10"
+                        ToolTip="Open Video File"
+                        Command="{Binding OpenVideoFileCommand}">
+                        <materialDesign:PackIcon
+                            Kind="FolderOpen"
+                            Height="20"
+                            Width="20" />
+                    </Button>
 
-        <Grid
-            Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="70"/>
-            </Grid.RowDefinitions>
+                    <Button
+                        Width="50"
+                        Height="50"
+                        Margin="10"
+                        ToolTip="Open Video File"
+                        Command="{Binding AddBookmarkCommand}"                        
+                        IsEnabled="{Binding IsVideoOpen}">
+                        <materialDesign:PackIcon
+                            Kind="BookmarkAdd"
+                            Height="20"
+                            Width="20" />
+                    </Button>
+                </StackPanel>
+            </materialDesign:Card>
 
-            <Image
-                Source="{Binding Video}"
-                Margin="0 51 0 0"/>
+            <Grid
+                Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel>
-                <Expander
-                    HorizontalAlignment="Stretch">
-                    <Expander.Header>
-                        <StackPanel
-                            Orientation="Horizontal">
-                            <materialDesign:PackIcon 
-                                Kind="Bookmark"
-                                Margin="10 0 10 0"/>
-                            <TextBlock
-                                Text="Marked frames"/>
-                        </StackPanel>
-                    </Expander.Header>
-                    <ListView
-                        TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                        Margin="24,8,24,16">                        
-                    </ListView>
-                </Expander>                
-            </StackPanel>
+                <Image
+                    Source="{Binding Video}"
+                    Margin="0 51 0 0"/>
 
-            <Slider
-                TickFrequency="5"
-                Orientation="Horizontal"
-                Minimum="0"
-                Maximum="{Binding MaxFrameCount}"
-                Value="{Binding CurrentFrameCount}"
-                Grid.Row="1"
-                Margin="10 0 10 0"
-                IsEnabled="{Binding IsVideoOpen}"/>
+                <StackPanel>
+                    <Expander
+                        HorizontalAlignment="Stretch"
+                        Background="Green">
+                        <Expander.Header>
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <materialDesign:PackIcon 
+                                    Kind="Bookmark"
+                                    Margin="10 0 10 0"/>
+                                <TextBlock
+                                    Text="Marked frames"/>
+                            </StackPanel>
+                        </Expander.Header>
+                        <ListView
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                            Margin="24,8,24,16"
+                            ItemsSource="{Binding Bookmarks}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <Image
+                                            Source="{Binding Path=FrameBm}"
+                                            Width="100"/>
+                                        <TextBlock
+                                            Text="Frame#:"
+                                            VerticalAlignment="Center"
+                                            Margin="10"/>
+                                        <TextBlock
+                                            Text="{Binding Path=FrameCount}"
+                                            VerticalAlignment="Center"
+                                            Margin="0 10 10 10"/>
+                                        <TextBlock
+                                            Text="Description:"
+                                            VerticalAlignment="Center"
+                                            Margin="10"/>
+                                        <TextBlock
+                                            Text="{Binding Path=Description}"
+                                            VerticalAlignment="Center"
+                                            Margin="0 10 10 10"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Expander>
+                </StackPanel>
 
-            <StackPanel
-                Orientation="Horizontal"
-                HorizontalAlignment="Center"
-                Grid.Row="2"
-                IsEnabled="{Binding IsVideoOpen}">
-                <Button
-                    Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                    ToolTip="Play"
-                    Command="{Binding PlayVideoCommand}">
-                    <materialDesign:PackIcon
-                        Kind="Play"
-                        Height="24"
-                        Width="24"/>
-                </Button>
-            </StackPanel>
-            
+                <Slider
+                    TickFrequency="5"
+                    Orientation="Horizontal"
+                    Minimum="0"
+                    Maximum="{Binding MaxFrameCount}"
+                    Value="{Binding CurrentFrameCount, Mode=TwoWay}"
+                    Grid.Row="1"
+                    Margin="10 0 10 0"
+                    IsEnabled="{Binding IsVideoOpen}"/>
+
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Grid.Row="2"
+                    IsEnabled="{Binding IsVideoOpen}">
+
+                    <Button
+                        ToolTip="Previous frame"
+                        Margin="0 0 10 0"
+                        Command="{Binding GetPreviousFrameCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
+                                            <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <materialDesign:PackIcon
+                            Kind="FrameBackward"
+                            Height="24"
+                            Width="24" />
+                    </Button>
+
+                    <Button
+                        Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                        Command="{Binding PlayVideoCommand}">
+                        <materialDesign:PackIcon                            
+                            Height="24"
+                            Width="24">
+                            <materialDesign:PackIcon.Style>
+                                <Style TargetType="materialDesign:PackIcon">
+                                    <Setter Property="Kind" Value="Play"/>
+                                    <Setter Property="ToolTip" Value="Play"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NeedToPlayVideo}" Value="True">
+                                            <Setter Property="Kind" Value="Pause"/>
+                                            <Setter Property="ToolTip" Value="Pause"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </materialDesign:PackIcon.Style>
+                        </materialDesign:PackIcon>
+                    </Button>
+
+                    <Button
+                        ToolTip="Next frame"
+                        Margin="10 0 0 0"
+                        Command="{Binding GetNextFrameCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
+                                            <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>                        
+                        <materialDesign:PackIcon
+                            Kind="FrameForward"
+                            Height="24"
+                            Width="24"/>
+                    </Button>
+
+                    <TextBlock Text="{Binding CurrentFrameCount}"/>
+                </StackPanel>
+
+            </Grid>
         </Grid>
-    </Grid>
+    </materialDesign:DialogHost>
 </Window>

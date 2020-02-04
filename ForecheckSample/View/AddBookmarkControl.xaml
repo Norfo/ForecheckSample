@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="ForecheckSample.View.AddBookmarkControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:ForecheckSample.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Image
+            Source="{Binding Frame}"/>
+
+        <Grid
+            Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <TextBox
+                Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+                Margin="10"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto"
+                materialDesign:HintAssist.Hint="Description" 
+                Text="{Binding Description}"/>
+
+            <StackPanel
+                Orientation="Horizontal"
+                Grid.Row="1"
+                HorizontalAlignment="Center">
+                <Button
+                    Content="Ok"
+                    Width="80"
+                    Margin="10 0 10 0"
+                    Command="{Binding SaveBookmarkCommand}"/>
+                <Button
+                    Content="Cancel"
+                    Width="80"
+                    Margin="10 0 10 0"
+                    IsCancel="True"
+                    Command="{Binding CancelCommand}"/>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>

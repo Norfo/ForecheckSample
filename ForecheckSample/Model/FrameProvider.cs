@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using OpenCvSharp;
 
@@ -18,6 +19,7 @@ namespace ForecheckSample.Model
         public int MaxFrameCount { get; private set; } = 0;
         public int CurrentFrameCount { get; private set; } = 0;
         public double Fps { get; private set; } = 0;
+        public Mat CurrentFrame { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,6 +41,7 @@ namespace ForecheckSample.Model
         {
             Mat frame = new Mat();
             videoCapture.Read(frame);
+            CurrentFrame = frame.Clone();
             return ConvertMatToBitmapSource(frame);
         }
 
@@ -47,8 +50,25 @@ namespace ForecheckSample.Model
             Mat frame = new Mat();
             if (videoCapture.PosFrames < videoCapture.FrameCount)
             {
-                CurrentFrameCount++;
+                CurrentFrameCount = videoCapture.PosFrames;
                 videoCapture.Read(frame);
+                CurrentFrame = frame.Clone();
+                return ConvertMatToBitmapSource(frame);
+            }
+
+            return null;
+        }
+
+        public BitmapSource GetPreviousFrame()
+        {
+            Mat frame = new Mat();
+            if (videoCapture.PosFrames - 1 >= 0)
+            {
+                int prevF = videoCapture.PosFrames - 2;
+                SetNewVideoPosition(prevF);
+                CurrentFrameCount = videoCapture.PosFrames;
+                videoCapture.Read(frame);
+                CurrentFrame = frame.Clone();
                 return ConvertMatToBitmapSource(frame);
             }
 
@@ -57,11 +77,14 @@ namespace ForecheckSample.Model
 
         private BitmapSource ConvertMatToBitmapSource(Mat image)
         {
-            return OpenCvSharp.Extensions.BitmapSourceConverter.ToBitmapSource(image);
+            var bmpS = BitmapSource.Create(image.Cols, image.Rows, 100, 100, PixelFormats.Bgr24, BitmapPalettes.Halftone256, image.Data, image.Cols * image.Rows * 3, image.Cols * 3);
+            GC.Collect();
+
+            return bmpS;
         }
 
         public void SetNewVideoPosition(int newPosition)
-        {
+        {            
             CurrentFrameCount = newPosition;
             videoCapture.Set(CaptureProperty.PosFrames, newPosition);
         }
