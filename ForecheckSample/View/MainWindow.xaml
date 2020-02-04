@@ -84,7 +84,8 @@
                         <ListView
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
                             Margin="24,8,24,16"
-                            ItemsSource="{Binding Bookmarks}">
+                            ItemsSource="{Binding Bookmarks}"
+                            SelectedIndex="{Binding SelectedBookmarkIndex, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel

@@ -19,6 +19,7 @@ namespace ForecheckSample.ViewModel
         private DispatcherTimer timer;
         private bool isTimerInitialized = false;
         private int currentFrameCount = 0;
+        public int selectedBookmarkIndex = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public BitmapSource Video { get; private set; }
@@ -41,6 +42,18 @@ namespace ForecheckSample.ViewModel
         }
 
         public ObservableCollection<Bookmark> Bookmarks { get; set; } = new ObservableCollection<Bookmark>();
+        public int SelectedBookmarkIndex
+        {
+            get { return selectedBookmarkIndex; }
+            set
+            {
+                if (value >= 0 && value < Bookmarks.Count)
+                {
+                    selectedBookmarkIndex = value;
+                    MoveToSelectedFrame();
+                }
+            }
+        }
 
         public ICommand OpenVideoFileCommand
         {
@@ -191,6 +204,12 @@ namespace ForecheckSample.ViewModel
             Video = frame;
             currentFrameCount = frameProvider.CurrentFrameCount;
             OnPropertyChanged("CurrentFrameCount");
+        }
+
+        private void MoveToSelectedFrame()
+        {
+            int index = Bookmarks[selectedBookmarkIndex].FrameCount;
+            frameProvider.SetNewVideoPosition(index);
         }
 
         protected void OnPropertyChanged(string propertyName = null)
