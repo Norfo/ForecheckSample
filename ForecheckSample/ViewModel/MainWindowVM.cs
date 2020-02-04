@@ -19,7 +19,8 @@ namespace ForecheckSample.ViewModel
         private DispatcherTimer timer;
         private bool isTimerInitialized = false;
         private int currentFrameCount = 0;
-        public int selectedBookmarkIndex = -1;
+        private int selectedBookmarkIndex = -1;
+        private double frameDelay = 1;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public BitmapSource Video { get; private set; }
@@ -93,6 +94,7 @@ namespace ForecheckSample.ViewModel
                     currentFrameCount = frameProvider.CurrentFrameCount;
                     Video = frameProvider.GetInitialFrame();
                     Bookmarks = new ObservableCollection<Bookmark>();
+                    frameDelay = 1000.0 / frameProvider.Fps;
                 }
             }
         }
@@ -159,7 +161,7 @@ namespace ForecheckSample.ViewModel
             {
                 timer = new DispatcherTimer();
                 timer.Tick += TimerTick; 
-                timer.Interval = TimeSpan.FromMilliseconds(30);
+                timer.Interval = TimeSpan.FromMilliseconds(frameDelay);
                 isTimerInitialized = true;
             }
         }

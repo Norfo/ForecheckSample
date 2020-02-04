@@ -70,8 +70,7 @@
                 <StackPanel>
                     <Expander
                         HorizontalAlignment="Stretch"
-                        Background="Green"
-                        Height="100">
+                        Background="Green">
                         <Expander.Header>
                             <StackPanel
                                 Orientation="Horizontal">
@@ -82,40 +81,43 @@
                                     Text="Marked frames"/>
                             </StackPanel>
                         </Expander.Header>
-                        <ListView
+                        <Grid
+                            Height="300">
+                            <ListView
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
                             Margin="24,8,24,16"
                             ItemsSource="{Binding Bookmarks}"
                             SelectedIndex="{Binding SelectedBookmarkIndex, Mode=TwoWay}"
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
-                            ScrollViewer.CanContentScroll="False">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel
+                            ScrollViewer.CanContentScroll="True">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel
                                         Orientation="Horizontal">
-                                        <Image
+                                            <Image
                                             Source="{Binding Path=FrameBm}"
                                             Width="100"/>
-                                        <TextBlock
+                                            <TextBlock
                                             Text="Frame#:"
                                             VerticalAlignment="Center"
                                             Margin="10"/>
-                                        <TextBlock
+                                            <TextBlock
                                             Text="{Binding Path=FrameCount}"
                                             VerticalAlignment="Center"
                                             Margin="0 10 10 10"/>
-                                        <TextBlock
+                                            <TextBlock
                                             Text="Description:"
                                             VerticalAlignment="Center"
                                             Margin="10"/>
-                                        <TextBlock
+                                            <TextBlock
                                             Text="{Binding Path=Description}"
                                             VerticalAlignment="Center"
                                             Margin="0 10 10 10"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
                     </Expander>
                 </StackPanel>
 
