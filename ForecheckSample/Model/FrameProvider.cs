@@ -41,6 +41,7 @@ namespace ForecheckSample.Model
         {
             Mat frame = new Mat();
             videoCapture.Read(frame);
+            CurrentFrameCount = videoCapture.PosFrames;
             CurrentFrame = frame.Clone();
             return ConvertMatToBitmapSource(frame);
         }
@@ -52,6 +53,24 @@ namespace ForecheckSample.Model
             {
                 CurrentFrameCount = videoCapture.PosFrames;
                 videoCapture.Read(frame);
+                CurrentFrameCount = videoCapture.PosFrames;
+                CurrentFrame = frame.Clone();
+                return ConvertMatToBitmapSource(frame);
+            }
+
+            return null;
+        }
+
+        public BitmapSource GetCurrentFrame()
+        {
+            Mat frame = new Mat();
+            if (videoCapture.PosFrames - 1 >= 0)
+            {
+                int prevF = videoCapture.PosFrames - 1;
+                SetNewVideoPosition(prevF);
+                CurrentFrameCount = videoCapture.PosFrames;
+                videoCapture.Read(frame);
+                CurrentFrameCount = videoCapture.PosFrames;
                 CurrentFrame = frame.Clone();
                 return ConvertMatToBitmapSource(frame);
             }
@@ -68,6 +87,7 @@ namespace ForecheckSample.Model
                 SetNewVideoPosition(prevF);
                 CurrentFrameCount = videoCapture.PosFrames;
                 videoCapture.Read(frame);
+                CurrentFrameCount = videoCapture.PosFrames;
                 CurrentFrame = frame.Clone();
                 return ConvertMatToBitmapSource(frame);
             }

@@ -210,6 +210,10 @@ namespace ForecheckSample.ViewModel
         {
             int index = Bookmarks[selectedBookmarkIndex].FrameCount;
             frameProvider.SetNewVideoPosition(index);
+            var frame = frameProvider.GetCurrentFrame();
+            Video = frame;
+            currentFrameCount = frameProvider.CurrentFrameCount;
+            OnPropertyChanged("CurrentFrameCount");
         }
 
         protected void OnPropertyChanged(string propertyName = null)

@@ -70,7 +70,8 @@
                 <StackPanel>
                     <Expander
                         HorizontalAlignment="Stretch"
-                        Background="Green">
+                        Background="Green"
+                        Height="100">
                         <Expander.Header>
                             <StackPanel
                                 Orientation="Horizontal">
@@ -85,7 +86,9 @@
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
                             Margin="24,8,24,16"
                             ItemsSource="{Binding Bookmarks}"
-                            SelectedIndex="{Binding SelectedBookmarkIndex, Mode=TwoWay}">
+                            SelectedIndex="{Binding SelectedBookmarkIndex, Mode=TwoWay}"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ScrollViewer.CanContentScroll="False">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel
