@@ -138,6 +138,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+
                     <StackPanel
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"

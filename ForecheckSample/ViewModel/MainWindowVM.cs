@@ -1,12 +1,8 @@
 ﻿using ForecheckSample.Model;
 using ForecheckSample.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -94,7 +90,7 @@ namespace ForecheckSample.ViewModel
                     currentFrameCount = frameProvider.CurrentFrameCount;
                     Video = frameProvider.GetInitialFrame();
                     Bookmarks = new ObservableCollection<Bookmark>();
-                    frameDelay = 15;
+                    frameDelay = 1000.0/frameProvider.Fps - 22; //Opencv reads and other processing per each frame at average delay is 22ms 
                 }
             }
         }
@@ -114,16 +110,21 @@ namespace ForecheckSample.ViewModel
             }            
         }
 
+        private void GrabFrame(BitmapSource frame)
+        {
+            Video = frame;
+            currentFrameCount = frameProvider.CurrentFrameCount;
+            OnPropertyChanged("CurrentFrameCount");
+        }
+
         private void TimerTick(object sender, EventArgs e)
         {
             var frame = frameProvider.GetNextFrame();
             if (frame == null)
                 StopTimer();
 
-            Video = frame;
-            currentFrameCount = frameProvider.CurrentFrameCount;
-            OnPropertyChanged("CurrentFrameCount");
-            if (currentFrameCount + 1 >= MaxFrameCount)
+            GrabFrame(frame);            
+            if (currentFrameCount >= MaxFrameCount)
                 StopTimer();
         }
 
@@ -192,9 +193,7 @@ namespace ForecheckSample.ViewModel
             if (frame == null)
                 return;
 
-            Video = frame;
-            currentFrameCount = frameProvider.CurrentFrameCount;
-            OnPropertyChanged("CurrentFrameCount");
+            GrabFrame(frame);
         }
 
         private void GetPreviousFrame()
@@ -203,9 +202,7 @@ namespace ForecheckSample.ViewModel
             if (frame == null)
                 return;
 
-            Video = frame;
-            currentFrameCount = frameProvider.CurrentFrameCount;
-            OnPropertyChanged("CurrentFrameCount");
+            GrabFrame(frame);
         }
 
         private void MoveToSelectedFrame()
@@ -213,9 +210,10 @@ namespace ForecheckSample.ViewModel
             int index = Bookmarks[selectedBookmarkIndex].FrameCount;
             frameProvider.SetNewVideoPosition(index);
             var frame = frameProvider.GetCurrentFrame();
-            Video = frame;
-            currentFrameCount = frameProvider.CurrentFrameCount;
-            OnPropertyChanged("CurrentFrameCount");
+            if (frame == null)
+                return;
+
+            GrabFrame(frame);
         }
 
         protected void OnPropertyChanged(string propertyName = null)

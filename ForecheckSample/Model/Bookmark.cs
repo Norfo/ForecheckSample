@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenCvSharp;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using OpenCvSharp;
 
 namespace ForecheckSample.Model
 {

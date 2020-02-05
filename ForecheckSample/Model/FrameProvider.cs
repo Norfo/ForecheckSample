@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenCvSharp;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using OpenCvSharp;
 
 namespace ForecheckSample.Model
 {
@@ -39,23 +35,15 @@ namespace ForecheckSample.Model
 
         public BitmapSource GetInitialFrame()
         {
-            Mat frame = new Mat();
-            videoCapture.Read(frame);
-            CurrentFrameCount = videoCapture.PosFrames;
-            CurrentFrame = frame.Clone();
-            return ConvertMatToBitmapSource(frame);
+            return GrabFrame();
         }
 
         public BitmapSource GetNextFrame()
         {
-            Mat frame = new Mat();
             if (videoCapture.PosFrames < videoCapture.FrameCount)
             {
                 CurrentFrameCount = videoCapture.PosFrames;
-                videoCapture.Read(frame);
-                CurrentFrameCount = videoCapture.PosFrames;
-                CurrentFrame = frame.Clone();
-                return ConvertMatToBitmapSource(frame);
+                return GrabFrame();
             }
 
             return null;
@@ -63,33 +51,25 @@ namespace ForecheckSample.Model
 
         public BitmapSource GetCurrentFrame()
         {
-            Mat frame = new Mat();
             if (videoCapture.PosFrames - 1 >= 0)
             {
                 int prevF = videoCapture.PosFrames - 1;
                 SetNewVideoPosition(prevF);
                 CurrentFrameCount = videoCapture.PosFrames;
-                videoCapture.Read(frame);
-                CurrentFrameCount = videoCapture.PosFrames;
-                CurrentFrame = frame.Clone();
-                return ConvertMatToBitmapSource(frame);
+                return GrabFrame();
             }
 
             return null;
         }
 
         public BitmapSource GetPreviousFrame()
-        {
-            Mat frame = new Mat();
+        {            
             if (videoCapture.PosFrames - 1 >= 0)
             {
                 int prevF = videoCapture.PosFrames - 2;
                 SetNewVideoPosition(prevF);
                 CurrentFrameCount = videoCapture.PosFrames;
-                videoCapture.Read(frame);
-                CurrentFrameCount = videoCapture.PosFrames;
-                CurrentFrame = frame.Clone();
-                return ConvertMatToBitmapSource(frame);
+                return GrabFrame();
             }
 
             return null;
@@ -101,6 +81,15 @@ namespace ForecheckSample.Model
             GC.Collect();
 
             return bmpS;
+        }
+
+        private BitmapSource GrabFrame()
+        {
+            Mat frame = new Mat();
+            videoCapture.Read(frame);
+            CurrentFrameCount = videoCapture.PosFrames;
+            CurrentFrame = frame.Clone();
+            return ConvertMatToBitmapSource(frame);
         }
 
         public void SetNewVideoPosition(int newPosition)
