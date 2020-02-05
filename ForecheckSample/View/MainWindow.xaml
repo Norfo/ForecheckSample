@@ -131,87 +131,112 @@
                     Margin="10 0 10 0"
                     IsEnabled="{Binding IsVideoOpen}"/>
 
-                <StackPanel
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Grid.Row="2"
-                    IsEnabled="{Binding IsVideoOpen}">
-
-                    <Button
-                        ToolTip="Previous frame"
-                        Margin="0 0 10 0"
-                        Command="{Binding GetPreviousFrameCommand}">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
-                                <Setter Property="IsEnabled" Value="False"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
-                                            <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <MultiDataTrigger.Setters>
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </MultiDataTrigger.Setters>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                        <materialDesign:PackIcon
-                            Kind="FrameBackward"
-                            Height="24"
-                            Width="24" />
-                    </Button>
-
-                    <Button
-                        Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
-                        Command="{Binding PlayVideoCommand}">
-                        <materialDesign:PackIcon                            
-                            Height="24"
-                            Width="24">
-                            <materialDesign:PackIcon.Style>
-                                <Style TargetType="materialDesign:PackIcon">
-                                    <Setter Property="Kind" Value="Play"/>
-                                    <Setter Property="ToolTip" Value="Play"/>
+                <Grid
+                    Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Grid.Column="1"
+                        IsEnabled="{Binding IsVideoOpen}">
+                        <Button
+                            ToolTip="Previous frame"
+                            Margin="0 0 10 0"
+                            Command="{Binding GetPreviousFrameCommand}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
+                                    <Setter Property="IsEnabled" Value="False"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding NeedToPlayVideo}" Value="True">
-                                            <Setter Property="Kind" Value="Pause"/>
-                                            <Setter Property="ToolTip" Value="Pause"/>
-                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
+                                                <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </materialDesign:PackIcon.Style>
-                        </materialDesign:PackIcon>
-                    </Button>
+                            </Button.Style>
+                            <materialDesign:PackIcon
+                                Kind="FrameBackward"
+                                Height="24"
+                                Width="24" />
+                        </Button>
 
-                    <Button
-                        ToolTip="Next frame"
-                        Margin="10 0 0 0"
-                        Command="{Binding GetNextFrameCommand}">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
-                                <Setter Property="IsEnabled" Value="False"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
-                                            <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <MultiDataTrigger.Setters>
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </MultiDataTrigger.Setters>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>                        
-                        <materialDesign:PackIcon
-                            Kind="FrameForward"
-                            Height="24"
-                            Width="24"/>
-                    </Button>
+                        <Button
+                            Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                            Command="{Binding PlayVideoCommand}">
+                            <materialDesign:PackIcon                            
+                                Height="24"
+                                Width="24">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Setter Property="Kind" Value="Play"/>
+                                        <Setter Property="ToolTip" Value="Play"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding NeedToPlayVideo}" Value="True">
+                                                <Setter Property="Kind" Value="Pause"/>
+                                                <Setter Property="ToolTip" Value="Pause"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                        </Button>
 
-                    <TextBlock Text="{Binding CurrentFrameCount}"/>
-                </StackPanel>
+                        <Button
+                            ToolTip="Next frame"
+                            Margin="10 0 0 0"
+                            Command="{Binding GetNextFrameCommand}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionMiniDarkButton}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding NeedToPlayVideo}" Value="False"/>
+                                                <Condition Binding="{Binding IsVideoOpen}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <materialDesign:PackIcon
+                                Kind="FrameForward"
+                                Height="24"
+                                Width="24"/>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Column="2"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right">
+                        <TextBlock
+                            Text="Frame#:"
+                            Margin="0 0 10 0"/>
+                        <TextBlock 
+                            Text="{Binding CurrentFrameCount}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                        <TextBlock
+                            Text="/"/>
+                        <TextBlock
+                            Text="{Binding MaxFrameCount}"
+                            Margin="0 0 10 0"/>
+                    </StackPanel>
+                    
+                </Grid>
 
             </Grid>
         </Grid>

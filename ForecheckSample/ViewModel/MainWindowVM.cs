@@ -94,7 +94,7 @@ namespace ForecheckSample.ViewModel
                     currentFrameCount = frameProvider.CurrentFrameCount;
                     Video = frameProvider.GetInitialFrame();
                     Bookmarks = new ObservableCollection<Bookmark>();
-                    frameDelay = 1000.0 / frameProvider.Fps;
+                    frameDelay = 15;
                 }
             }
         }
